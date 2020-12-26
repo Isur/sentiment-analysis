@@ -1,0 +1,8 @@
+version: "3"
+
+services:
+  flask:
+    build: ./flask-sentiment
+    container_name: sentiment-ai
+    ports:
+      - 5000:5000

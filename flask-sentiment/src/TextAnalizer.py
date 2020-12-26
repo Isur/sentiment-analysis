@@ -1,0 +1,44 @@
+from textblob import TextBlob
+import re # regex
+
+class TextAnalizer():
+    def __init__(self, text) -> None:
+        self.text = text
+        self.polarity = None
+        self.subjectivity = None
+        self.sentiment = None
+        self.subject = None
+
+    def clearText(self):
+            text = self.text
+            text = re.sub('@[A-Za-z0-9]+', '', text) # remove @mentions
+            text = re.sub('#', '', text) # remove tags '#'
+            text = re.sub('RT[\s]+', '', text) # remove RT
+            text = re.sub('https?:\/\/\S+', '', text) # Remove hyperlinks
+            self.text = text
+
+    def textPolarity(self):
+        self.polarity = TextBlob(self.text).sentiment.polarity
+
+    def textSubjectivity(self):
+        self.subjectivity = TextBlob(self.text).sentiment.subjectivity
+
+    def getSentiment(self):
+        if self.polarity is None: self.textPolarity()
+
+        if self.polarity > 0: self.sentiment = 1
+        elif self.polarity < 0: self.sentiment = -1
+        else: self.sentiment = 0
+
+    def getSubject(self):
+        if self.subjectivity is None: self.textSubjectivity()
+
+        if self.subjectivity > 0: self.subject = 1
+        elif self.subjectivity < 0: self.subject = -1
+        else: self.subject = 0
+
+    def analize(self):
+        self.textSubjectivity()
+        self.textPolarity()
+        self.getSentiment()
+        self.getSubject()
