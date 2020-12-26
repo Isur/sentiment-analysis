@@ -1,0 +1,17 @@
+# node mudules
+/node_modules
+# builds
+/dist
+/build
+# cache
+/v8-compile-cache-0
+.eslintcache
+# logs
+npm-debug.log
+# Editor settings
+/.vscode
+/.idea
+# Testing Coverage
+/coverage
+# Environment Config
+.env

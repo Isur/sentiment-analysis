@@ -1,0 +1,15 @@
+.Auth {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 550px;
+  height: fit-content;
+  padding: 10px;
+  background: white;
+  .Button {
+    margin-top: 2em;
+  }
+  .Input {
+    margin-top: 1em;
+  }
+}

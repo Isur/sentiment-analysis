@@ -1,0 +1,32 @@
+.Input {
+  display: flex;
+  flex-direction: column;
+  label {
+    color: black;
+    font-size: 18px;
+    padding-left: 4px;
+  }
+  input {
+    padding: 5px;
+    border: none;
+    background: none;
+    border-bottom: solid rgba(0, 0, 0, 0.3);
+    &:active, &:focus {
+      border-bottom-color: #0582CA;
+      outline: none;
+    }
+    width: 300px;
+  }
+
+  .error {
+    padding-left: 4px;
+    margin-top: 2px;
+    color: red;
+    font-size: 16px;
+    min-height: 16px;
+    line-height: 16px;
+    .hidden {
+      visibility: hidden;
+    }
+  }
+}
