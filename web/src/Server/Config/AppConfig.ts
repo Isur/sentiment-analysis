@@ -1,9 +1,10 @@
 import dotenv from "dotenv";
-import { Config, Cookies, Environment, EnvironmentType } from "./config.interface";
+import { Config, Containers, Cookies, Environment, EnvironmentType } from "./config.interface";
 
 class AppConfig implements Config {
   environment: Environment;
   cookies: Cookies;
+  containers: Containers;
 
   constructor() {
     dotenv.config();
@@ -12,11 +13,13 @@ class AppConfig implements Config {
   }
 
   loadFromEnv() {
-    const port = process.env.PORT;
-    const env = process.env.NODE_ENV as EnvironmentType;
-    const secret = process.env.SECRET;
     this.environment = {
-      env, port, secret,
+      env: process.env.NODE_ENV as EnvironmentType,
+      port: process.env.PORT,
+      secret: process.env.SECRET,
+    };
+    this.containers = {
+      sentiment: process.env.FLASK_SENTIMENT,
     };
   }
 

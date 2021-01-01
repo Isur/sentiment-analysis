@@ -18,7 +18,8 @@ export default {
   plugins: [
     new CopyWebpackPlugin({
       patterns: [
-        { from: "./.env", to: "" }
+        { from: "./.env", to: "" },
+        { from: "./prisma", to: "prisma/" }
       ]
     }),
   ],

@@ -1,6 +1,7 @@
 export interface Config {
   environment: Environment,
   cookies: Cookies,
+  containers: Containers,
 }
 
 export interface Environment {
@@ -16,3 +17,7 @@ export interface Cookies {
 }
 
 export type EnvironmentType = "development" | "production" | "dockerized";
+
+export interface Containers {
+  sentiment: string,
+}

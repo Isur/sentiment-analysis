@@ -19,9 +19,13 @@
     "precommit": "npm run linter-no-warning && npm run typecheck && npm run test"
   },
   "engines": {
-    "node" : "14"
+    "node": "14"
   },
-  "keywords": ["react", "node", "typescript"],
+  "keywords": [
+    "react",
+    "node",
+    "typescript"
+  ],
   "author": "Isur",
   "license": "MIT",
   "repository": "https://github.com/Isur/sentiment-analysis",

@@ -6,8 +6,10 @@ services:
     container_name: sentiment-ai
     ports:
       - 5000:5000
-  web-app:
+  web-sentiment:
     build: ./web
     container_name: sentiment-web
+    environment:
+      - FLASK_SENTIMENT=http://flask-sentiment:5000/
     ports:
       - 3000:3000
