@@ -1,9 +1,10 @@
 import React from "react";
 import { RegisterContainer } from "../../Containers";
+import "./Auth.scss";
 
 const RegisterPage = () => {
   return (
-    <div>
+    <div className="RegisterPage">
       <RegisterContainer />
     </div>
   );

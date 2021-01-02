@@ -7,8 +7,6 @@ export default (app: string, initData: string): string => {
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Sentiment Analisys</title>
   <link rel="shortcut icon" href="/public/images/favicon.ico" />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
   ${process.env.NODE_ENV === "production" ? `<link rel="stylesheet" href="/style.css">` : ""}
 </head>
   <body>

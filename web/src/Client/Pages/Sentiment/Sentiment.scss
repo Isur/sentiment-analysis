@@ -1,0 +1,16 @@
+.SentimentPage {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .container {
+        width: 80%;
+        height: 80%;
+        max-width: 400px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-content: center;
+    }
+}

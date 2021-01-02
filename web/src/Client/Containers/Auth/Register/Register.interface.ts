@@ -1,11 +1,6 @@
-export interface RegisterState {
+export interface RegisterForm {
   email: string,
   username: string,
   password: string,
   confirmPassword: string,
-}
-
-export interface RegisterActionPayload {
-  field: string,
-  value: string,
 }

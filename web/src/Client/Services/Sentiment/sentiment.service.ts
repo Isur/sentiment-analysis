@@ -3,7 +3,7 @@ import { SentimentRequestDto, SentimentResponseDto } from "../../../Common/ApiDt
 
 class SentimentService extends ApiService {
   getSentiment = async (data: SentimentRequestDto): Promise<SentimentResponseDto> => {
-    return await this.requestService.post<SentimentResponseDto, SentimentRequestDto>("/", data);
+    return await this.requestService.post<SentimentResponseDto, SentimentRequestDto>("", data);
   }
 }
 

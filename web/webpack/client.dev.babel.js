@@ -56,6 +56,6 @@ export default {
     ],
   },
   resolve: {
-    extensions: [".tsx", ".ts", ".jsx", ".js"],
+    extensions: [".tsx", ".ts", ".jsx", ".js", ".css", ".scss"],
   },
 };

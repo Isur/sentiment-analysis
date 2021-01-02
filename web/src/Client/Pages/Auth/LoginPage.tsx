@@ -1,9 +1,10 @@
 import React from "react";
 import { LoginContainer } from "../../Containers";
+import "./Auth.scss";
 
 const LoginPage = () => {
   return (
-    <div>
+    <div className="LoginPage">
       <LoginContainer />
     </div>
   );
