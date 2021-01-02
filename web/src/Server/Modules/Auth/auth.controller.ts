@@ -26,9 +26,8 @@ class AuthController extends BaseController implements Routable {
       body("email").isEmail()
         .notEmpty(),
       body("password").isString()
-        .isStrongPassword(),
-      body("confirmPassword").isString()
-        .isStrongPassword(),
+        .isLength({ min: 8 }),
+      body("confirmPassword").isString(),
       body("username").isString()
         .notEmpty(),
     ]), this.register);
