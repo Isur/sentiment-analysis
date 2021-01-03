@@ -1,5 +1,23 @@
+import pickle
+from os import path
 from textblob import TextBlob
+from TextPrepare import predict
 import re # regex
+
+modelPath = path.dirname(__file__) + "/data/model.pkl"
+c = None
+t = None
+with open(modelPath, "rb") as input:
+    c = pickle.load(input)
+    t = pickle.load(input)
+
+class NewAnalizer():
+    def __init__(self, text):
+        self.text = text
+        self.result = None
+
+    def prediction(self):
+        self.result = predict(self.text, c, t)[0][0]
 
 class TextAnalizer():
     def __init__(self, text) -> None:

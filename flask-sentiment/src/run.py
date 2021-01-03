@@ -1,5 +1,5 @@
 from flask import Flask, request, abort, jsonify
-from TextAnalizer import TextAnalizer
+from TextAnalizer import NewAnalizer
 
 app = Flask(__name__)
 
@@ -10,18 +10,11 @@ def hello_world():
 @app.route("/sentiment", methods=['POST'])
 def sentiment():
     if request.json['text'] is None: abort(400, 'Bad request')
-    analize = TextAnalizer(request.json['text'])
-    analize.analize()
+    n = NewAnalizer(request.json['text'])
+    n.prediction()
     response = jsonify({
-        'text': analize.text,
-        'sentiment': {
-            'result': analize.sentiment,
-            'polarity': analize.polarity,
-        },
-        'subjectivity': {
-            'result': analize.subject,
-            'subjectivity': analize.subjectivity,
-        }
+        'text': n.text,
+        'sentiment': n.result
     })
     return response
 
