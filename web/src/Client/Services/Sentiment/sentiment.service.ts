@@ -1,10 +1,11 @@
-import { ApiService } from "../Api/api.service";
-import { SentimentRequestDto, SentimentResponseDto } from "../../../Common/ApiDto/sentiment.dto";
+import { ApiService } from "../Base/api.service";
+import { SentimentAnalyzeResponseDto, SentimentAnalyzeRequestDto } from "@shared/ApiDto/sentiment.dto";
+import { API } from "@shared/Constants";
 
 class SentimentService extends ApiService {
-  getSentiment = async (data: SentimentRequestDto): Promise<SentimentResponseDto> => {
-    return await this.requestService.post<SentimentResponseDto, SentimentRequestDto>("", data);
+  public checkSentiment = async (data: SentimentAnalyzeRequestDto): Promise<SentimentAnalyzeResponseDto> => {
+    return await this.requestService.post<SentimentAnalyzeResponseDto, SentimentAnalyzeRequestDto>("/", data);
   }
 }
 
-export default new SentimentService("sentiment");
+export default new SentimentService(API.SENTIMENT);

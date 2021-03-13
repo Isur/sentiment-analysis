@@ -1,44 +1,56 @@
 import express, { Express } from "express";
-import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
+import { Service } from "typedi";
 import "./Utils/Database";
-import { AppConfig, Config } from "./Config";
-import { ApiAuth, ApiError, ReactMiddleware, RouterCache } from "./Middlewares";
+import { Logger, RouterCache } from "./Utils";
+import { Config } from "./Config";
+import { SessionMiddleware, ApiError, ReactMiddleware, ApiLang } from "./Middlewares";
 import Api from "./Api";
+import { FOLDERS } from "./Constants";
+import { StartJobs } from "./AutomatedJobs";
 
+@Service()
 class App {
-  express: Express;
-  config: Config;
-
-  constructor(config: Config) {
+  public express: Express;
+  public constructor(
+    private readonly config: Config,
+    private readonly api: Api,
+    private readonly routerCache: RouterCache,
+    private readonly react: ReactMiddleware,
+    private readonly startJobs: StartJobs,
+  ) {
     this.express = express();
-    this.config = config;
-    this.initMiddlewares();
-    this.initRoutes();
+    this._initMiddlewares();
+    this._initRoutes();
+    this._initJobs();
   }
 
-  initMiddlewares() {
-    this.express.use(bodyParser.json());
-    this.express.use(bodyParser.urlencoded({ extended: true }));
+  private async _initJobs() {
+    await this.startJobs.startJobs();
+  }
+
+  private _initMiddlewares() {
+    this.express.use(express.json());
+    this.express.use(express.urlencoded({ extended: true }));
     this.express.use(cookieParser());
-    this.express.use("/public", express.static("public"));
+    this.express.use(SessionMiddleware);
+    this.express.use("/public", express.static(FOLDERS.PUBLIC));
     if(this.config.environment.env === "development") {
-      this.express.use(RouterCache.mount());
+      this.express.use(this.routerCache.mount());
     } else {
       this.express.use("/client.js", express.static("client.js"));
       this.express.use("/style.css", express.static("style.css"));
     }
   }
 
-  initRoutes() {
-    this.express.use("/api", Api.router);
+  private _initRoutes() {
+    this.express.use("/api", this.api.router);
     this.express.use(ApiError);
-    this.express.get("*", ApiAuth(false), (req, res) => {
-      res.send(ReactMiddleware.getHtml(req));
+    this.express.use(ApiLang);
+    this.express.get("*", (req, res) => {
+      res.send(this.react.getHtml(req));
     });
   }
 }
 
-export default new App(
-  AppConfig,
-);
+export default App;

@@ -1,0 +1,30 @@
+{
+  "_": "en",
+  "loginPage": {
+    "login": "Log In",
+    "loginFailed": "Invalid Credentials",
+    "form": {
+      "loginLabel": "Login",
+      "loginPlaceholder": "Enter your login",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "Enter your password"
+    }
+  },
+  "registerPage": {
+    "form": {
+      "emailLabel": "Email",
+      "emailPlaceholder": "Enter your email",
+      "usernameLabel": "Username",
+      "usernamePlaceholder": "Enter your username",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "Enter your password",
+      "confirmPasswordLabel": "Confirm Password",
+      "confirmPasswordPlaceholder": "Confirm your password"
+    }
+  },
+  "common": {
+    "ok": "ok",
+    "fieldRequired": "Required!",
+    "fieldFormatEmail": "It should be an email with @"
+  }
+}

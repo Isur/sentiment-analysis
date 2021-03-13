@@ -1,30 +1,30 @@
 import { Request, Response } from "express";
-import { body } from "express-validator";
-import BaseController from "../BaseController";
-import { ApiValidator } from "../../Middlewares";
-import { SentimentRequestDto, SentimentResponseDto } from "../../../Common/ApiDto/sentiment.dto";
-import { SentimentService } from "./sentiment.service.interface";
-import Sentiment from "./sentiment.service";
+import { Inject, Service } from "typedi";
+import BaseController from "@server/Modules/BaseController";
+import { API } from "@shared/Constants";
+import { ApiAuthentication, ApiValidator } from "@server/Middlewares";
+import { SentimentAnalyzeRequestDto, SentimentAnalyzeResponseDto } from "@shared/ApiDto/sentiment.dto";
+import { SentimentService } from "@server/Modules/Sentiment/sentiment.service";
+import { sentimentValidation } from "@server/Modules/Sentiment/validations";
 
-class SentimentController extends BaseController {
-  constructor(private readonly _sentimentService: SentimentService) {
+@Service()
+export class SentimentController extends BaseController {
+  public basePath = `/${API.SENTIMENT}`;
+
+  @Inject()
+  private readonly _sentimentService: SentimentService;
+
+  public constructor() {
     super();
     this._initRoutes();
   }
 
-  _initRoutes = () => {
-    this.router.post("/", ApiValidator([
-      body("text").isString()
-        .notEmpty(),
-    ]), this.getSentiment);
-  }
+  protected _initRoutes = () => {
+    this.router.post("/", ApiAuthentication, ApiValidator(sentimentValidation), this._analyze);
+  };
 
-  getSentiment = async (req: Request<{}, {}, SentimentRequestDto>, res: Response<SentimentResponseDto>) => {
-    const sentiment = await this._sentimentService.getSentiment(req.body.text);
-    res.json(sentiment);
+  private _analyze = async (req: Request<{}, {}, SentimentAnalyzeRequestDto>, res: Response<SentimentAnalyzeResponseDto>) => {
+    const analyze = await this._sentimentService.analyze(req.body.text, req.session.userid);
+    res.json({ ...analyze });
   }
 }
-
-export default new SentimentController(
-  Sentiment,
-);

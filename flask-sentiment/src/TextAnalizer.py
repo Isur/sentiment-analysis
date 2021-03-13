@@ -7,9 +7,12 @@ import re # regex
 modelPath = path.dirname(__file__) + "/data/model.pkl"
 c = None
 t = None
-with open(modelPath, "rb") as input:
-    c = pickle.load(input)
-    t = pickle.load(input)
+try:
+    with open(modelPath, "rb") as input:
+        c = pickle.load(input)
+        t = pickle.load(input)
+except IOError:
+    print("Model does not exists")
 
 class NewAnalizer():
     def __init__(self, text):

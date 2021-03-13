@@ -1,10 +1,10 @@
-FROM node:14
+FROM node:15
 COPY package*.json /usr/src/app/
 WORKDIR /usr/src/app
 RUN npm install
 COPY . .
 ENV NODE_ENV dockerized
-RUN npm run dockerbuild
 RUN npx prisma generate
-EXPOSE 3000
-CMD ["npm", "start"]
+RUN npm run dockerbuild
+EXPOSE $PORT
+CMD npx prisma migrate deploy --preview-feature && npx prisma db seed --preview-feature && npm start

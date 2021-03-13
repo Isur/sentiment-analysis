@@ -1,24 +1,25 @@
 import { Router } from "express";
 import PromiseRouter from "express-promise-router";
+import { Service } from "typedi";
 import { ApiBadEndpoint, ApiLogger } from "./Middlewares";
-import { AuthModule, SentimentModule, SettingsModule, UsersModule } from "./Modules";
+import { Controllers } from "./Modules";
 
+@Service()
 class Api {
-  router: Router;
+  public router: Router;
 
-  constructor() {
+  public constructor() {
     this.router = PromiseRouter();
-    this.initRoutes();
+    this._initRoutes();
   }
 
-  initRoutes = () => {
+  private _initRoutes = () => {
     this.router.use(ApiLogger);
-    this.router.use("/auth", AuthModule.AuthController.router);
-    this.router.use("/users", UsersModule.UsersController.router);
-    this.router.use("/settings", SettingsModule.SettingsController.router);
-    this.router.use("/sentiment", SentimentModule.SentimentController.router);
+    Controllers.forEach(controller => {
+      this.router.use(controller.basePath, controller.router);
+    });
     this.router.use(ApiBadEndpoint);
   }
 }
 
-export default new Api();
+export default Api;

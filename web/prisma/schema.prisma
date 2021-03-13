@@ -8,13 +8,19 @@ datasource db {
 }
 
 model User {
-  id          String   @id @default(uuid())
-  username    String
-  email       String
-  createdDate DateTime
+  id          String    @id @default(uuid())
+  username    String    @unique
+  email       String    @unique
+  createdDate DateTime  @default(now())
+  updateDate  DateTime  @default(now()) @updatedAt
   password    String
+  role        Role      @default(USER)
+  sessions    Session[]
 
-  sessions Session[]
+  Sentiment Sentiment[]
+  Report    Report[]
+  BugReport BugReport[]
+  @@map("users")
 }
 
 model Session {
@@ -22,4 +28,54 @@ model Session {
   userId     String
   expiryTime DateTime
   user       User     @relation(fields: [userId], references: [id])
+
+  @@map("sessions")
+}
+
+model Sentiment {
+  id        Int      @id @default(autoincrement())
+  text      String
+  processed String[]
+  date      DateTime @default(now())
+  userId    String
+  sentiment Float
+
+  user User @relation(fields: [userId], references: [id])
+
+  Report Report[]
+  @@map("sentiments")
+}
+
+model Report {
+  id           String    @id @default(uuid())
+  date         DateTime  @default(now())
+  comment      String?
+  dateSolution DateTime?
+  userId       String
+  sentimentId  Int
+
+  user      User      @relation(fields: [userId], references: [id])
+  sentiment Sentiment @relation(fields: [sentimentId], references: [id])
+
+  @@map("reports")
+}
+
+model BugReport {
+  id           String    @id @default(uuid())
+  text         String
+  userId       String
+  status       Boolean   @default(false)
+  date         DateTime  @default(now())
+  comment      String?
+  dateSolution DateTime?
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("bug_reports")
+}
+
+enum Role {
+  ADMIN
+  MODERATOR
+  USER
 }

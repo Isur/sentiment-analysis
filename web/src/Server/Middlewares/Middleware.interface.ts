@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { HTTPError } from "../Utils/HTTPError";
+import { HTTPError } from "../HttpErrors/HTTPError";
 
 export interface Middleware {
   execute: (req: Request, res: Response, next: NextFunction) => void,

@@ -1,21 +1,19 @@
-import axios from "axios";
-import { SentimentObject } from "../../../Common/Interfaces/sentiment.interface";
-import { AppConfig, Config } from "../../Config";
-import { HTTPError } from "../../Utils";
-import { SentimentService } from "./sentiment.service.interface";
+import { Inject, Service } from "typedi";
+import { SentimentClient } from "@server/Clients";
+import { SentimentObject } from "@shared/Interfaces/sentiment.interface";
+import { SentimentRepository } from "@server/Modules/Sentiment/sentiment.repository";
 
-class Sentiment implements SentimentService {
-  constructor(private readonly _config: Config) {}
-  getSentiment = async (text: string) => {
-    try {
-      const result = await axios.post<SentimentObject>(`${this._config.containers.sentiment}/sentiment`, { text });
-      return result.data;
-    } catch(e) {
-      throw new HTTPError(503, "Sentiment System is turned off.");
-    }
+@Service()
+export class SentimentService {
+  @Inject()
+  private readonly _sentimentClient: SentimentClient;
+
+  @Inject()
+  private readonly  _sentimentRepository: SentimentRepository;
+
+  public analyze = async (text: string, userId: string): Promise<SentimentObject> => {
+    const sentiment = await this._sentimentClient.request({ text });
+    await this._sentimentRepository.createSentiment({ ...sentiment, userId });
+    return sentiment;
   }
 }
-
-export default new Sentiment(
-  AppConfig,
-);

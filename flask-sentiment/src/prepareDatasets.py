@@ -17,6 +17,8 @@ dataset = pd.read_csv(filepath_or_buffer=source, delimiter=",", encoding="ISO-88
 dataset.columns = ['target', 'ids', 'date', 'flag', 'user', 'text']
 dataset.drop(['ids', 'date', 'flag', 'user'], axis=1, inplace=True)
 
+print("Tokenization")
 dataset['token'] = dataset.progress_apply(lambda row: tokenizeText(row['text']), axis=1)
+print("Getting sentiments")
 dataset['sent'] = dataset.progress_apply(lambda row: getSent(row['text']), axis=1)
 dataset.to_csv(tokenizedPath, index=False)

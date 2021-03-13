@@ -3,6 +3,8 @@ import nodeExternals from "webpack-node-externals";
 import webpack from "webpack";
 import Dotenv from "dotenv-webpack";
 import StartServerPlugin from "start-server-webpack-plugin";
+import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
+import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 
 export default {
   target: "async-node",
@@ -35,7 +37,10 @@ export default {
       {
         test: /\.tsx?$/,
         exclude: /node_modules/,
-        use: ["awesome-typescript-loader"],
+        loader: "ts-loader",
+        options: {
+          transpileOnly: true,
+        }
       },
       {
         enforce: "pre",
@@ -50,10 +55,14 @@ export default {
   },
   resolve: {
     extensions: [".tsx", ".ts", ".jsx", ".js"],
+    plugins: [
+      new TsconfigPathsPlugin()
+    ]
   },
   plugins: [
     new Dotenv(),
     new StartServerPlugin('server.js'),
+    new ForkTsCheckerWebpackPlugin({ eslint: { files: "./src/**/*.{ts,tsx}" } }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.DefinePlugin({
       "process.env": {

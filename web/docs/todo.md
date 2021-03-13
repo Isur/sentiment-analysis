@@ -1,0 +1,5 @@
+- [ ] Prisma schema
+- [ ] Sentiment repository
+- [ ] Front
+    - [ ] Check sentiment
+    - [ ] display result

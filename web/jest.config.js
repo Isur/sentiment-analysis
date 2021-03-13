@@ -15,7 +15,7 @@ module.exports = {
   ],
   coverageDirectory: "<rootDir>/coverage/",
   displayName: {
-    name: "Sentiment-Web-App",
+    name: "Isomorphic-Web-App",
     color: "red",
   },
   verbose: true,

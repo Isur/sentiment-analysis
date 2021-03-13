@@ -1,6 +1,9 @@
 import path from "path";
 import nodeExternals from 'webpack-node-externals';
 import CopyWebpackPlugin from "copy-webpack-plugin";
+import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
+import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
+
 
 export default {
   target: "async-node",
@@ -19,9 +22,12 @@ export default {
     new CopyWebpackPlugin({
       patterns: [
         { from: "./.env", to: "" },
-        { from: "./prisma", to: "prisma/" }
+        { from: "./prisma", to: "prisma/" },
+        { from: "./locales", to: "locales/" },
+        { from: "./tsconfig.json", to: "tsconfig.json" }
       ]
     }),
+    new ForkTsCheckerWebpackPlugin({ eslint: { files: "./src/**/*.{ts,tsx}" } }),
   ],
   externals: [nodeExternals()],
   module: {
@@ -38,7 +44,10 @@ export default {
       {
         test: /\.tsx?$/,
         exclude: /node_modules/,
-        use: ["awesome-typescript-loader"],
+        loader: "ts-loader",
+        options: {
+          transpileOnly: true,
+        }
       },
       {
         enforce: "pre",
@@ -53,5 +62,8 @@ export default {
   },
   resolve: {
     extensions: [".tsx", ".ts", ".jsx", ".js"],
+    plugins: [
+      new TsconfigPathsPlugin()
+    ]
   },
 };

@@ -1,0 +1,1 @@
+export { FrontRoutes } from "./FrontRoutes";

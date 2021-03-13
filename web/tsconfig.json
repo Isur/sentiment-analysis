@@ -15,6 +15,13 @@
         "esModuleInterop": true,
         "resolveJsonModule": true,
         "skipLibCheck": true,
+        "baseUrl": "src",
+        "paths": {
+          "@root/*": ["../*"],
+          "@shared/*": ["Shared/*"],
+          "@client/*": ["Client/*"],
+          "@server/*": ["Server/*"]
+        }
     },
     "include": [
         "./src/**/*",

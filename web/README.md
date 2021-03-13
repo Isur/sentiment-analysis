@@ -3,12 +3,19 @@
 Isomoprhic React Application.
 
 ## Table of contents
-- [Getting Started](#getting-started)
-- [Running the tests](#running-the-tests)
-- [Deployment](#deployment)
-- [Built with](#built-with)
-- [Authors](#authors)
-- [License](#license)
+- [Starter](#starter)
+  - [Table of contents](#table-of-contents)
+  - [Getting Started:](#getting-started)
+    - [Prerequisites](#prerequisites)
+    - [Installing](#installing)
+    - [Database](#database)
+  - [Running the tests](#running-the-tests)
+    - [Unit tests](#unit-tests)
+    - [Linter](#linter)
+  - [Deployment:](#deployment)
+  - [Built with](#built-with)
+  - [Authors](#authors)
+  - [License](#license)
 
 ## Getting Started:
 
@@ -26,11 +33,38 @@ To install packages:
 
 `npm install`
 
+To generate prisma types:
+
+`npx prisma generate`
+
+To deploy existing migrations:
+
+`prisma migrate deploy --preview-feature `
+
+To seed database:
+
+`npx prisma db seed --preview-features`
+
 To run development envinronment use
 
 `npm run dev`
 
 Webpack.ts will build and launch application.
+
+### Database
+For a development you need user with permission to create a database.
+
+Migration
+
+`npx prisma migrate dev --preview-feature --name {name}` where {name} is a name of migration
+
+Reset
+
+`npx prisma migrate reset --preview-feature`
+
+Deploy
+
+`prisma migrate deploy --preview-feature `
 
 ## Running the tests
 ### Unit tests

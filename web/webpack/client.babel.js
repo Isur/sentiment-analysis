@@ -1,6 +1,9 @@
 import path from "path";
 import CopyWebpackPlugin from "copy-webpack-plugin";
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
+import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
+
 
 export default {
   target: "web",
@@ -22,6 +25,7 @@ export default {
     new MiniCssExtractPlugin({
       filename: "style.css",
     }),
+    new ForkTsCheckerWebpackPlugin({ eslint: { files: "./src/**/*.{ts,tsx}" } }),
   ],
   module: {
     rules: [
@@ -37,7 +41,10 @@ export default {
       {
         test: /\.tsx?$/,
         exclude: /node_modules/,
-        use: ["awesome-typescript-loader"],
+        loader: "ts-loader",
+        options: {
+          transpileOnly: true,
+        }
       },
       {
         enforce: "pre",
@@ -46,15 +53,18 @@ export default {
       },
       {
         test: /\.scss$/,
-        loader: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"],
+        use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"],
       },
       {
         test: /\.css$/,
-        loader: [MiniCssExtractPlugin.loader, "css-loader"],
+        use: [MiniCssExtractPlugin.loader, "css-loader"],
       },
     ],
   },
   resolve: {
     extensions: [".tsx", ".ts", ".jsx", ".js", ".css", ".scss"],
+    plugins: [
+      new TsconfigPathsPlugin()
+    ]
   },
 };

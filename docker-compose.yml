@@ -11,5 +11,22 @@ services:
     container_name: sentiment-web
     environment:
       - FLASK_SENTIMENT=http://flask-sentiment:5000/
+      - PORT=3000
+      - DATABASE_URL=postgresql://sentiment:sentiment@postgres13-sentiment:5432/sentiment?schema=public
     ports:
-      - 3000:3000
+      - 3005:3000
+    depends_on:
+      - postgres13-sentiment
+
+  postgres13-sentiment:
+    image: postgres:13
+    container_name: sentiment-db
+    volumes:
+      - ./docker/postgresql:/docker-entrypoint-initdb.d/
+      - ./docker/data/psql:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: "db"
+      POSTGRES_PASSWORD: "db"
+      TZ: "Europe/Warsaw"

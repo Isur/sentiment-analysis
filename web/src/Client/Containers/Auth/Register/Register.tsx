@@ -1,45 +1,34 @@
-import { push } from "connected-react-router";
 import React from "react";
-import { useDispatch } from "react-redux";
-import { Form, Input, Button } from "antd";
-import { UserOutlined, LockOutlined, MailOutlined } from "@ant-design/icons";
-import { AuthService } from "../../../Services";
-import {  RegisterForm } from "./Register.interface";
-import "./Register.scss";
+import { useTranslation } from "react-i18next";
+import { RegisterForm, validationSchemas } from "./RegisterForm";
+import { Button, Input, Form } from "@client/Components";
+import { AuthService } from "@client/Services";
+import useRedirect from "@client/Hooks/useRedirect";
+import { PATHS } from "@shared/Constants";
+import "../Auth.scss";
 
 const RegisterContainer = () => {
-  const dispatcher = useDispatch();
+  const redirect = useRedirect();
+  const { t } = useTranslation(["registerPage", "common"]);
 
-  const handleRegister = async (values: RegisterForm) => {
-    const resp = await AuthService.register(values);
-    if(resp) dispatcher(push("/login"));
+  const handleSubmit = async (data: RegisterForm) => {
+    await AuthService.register(data);
   };
 
   const handleLogin = () => {
-    dispatcher(push("/login"));
+    redirect(PATHS.LOGIN);
   };
 
   return (
-    <div className="Register">
-      <Form name="register" className="register-form" onFinish={handleRegister}>
-        <Form.Item name="username" rules={[{ required: true, message: "Please input your Username!" }]}>
-          <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Username" />
-        </Form.Item>
-        <Form.Item name="email" rules={[{ required: true, message: "Please input your Email!" }]}>
-          <Input prefix={<MailOutlined className="site-form-item-icon" />} placeholder="Email" type="email" />
-        </Form.Item>
-        <Form.Item name="password" rules={[{ required: true, message: "Please input your Password!" }]}>
-          <Input prefix={<LockOutlined className="site-form-item-icon" />} placeholder="Password" type="password" />
-        </Form.Item>
-        <Form.Item name="confirmPassword" rules={[{ required: true, message: "Please confirm your Password!" }]}>
-          <Input prefix={<LockOutlined className="site-form-item-icon" />} placeholder="Confirm Password" type="password" />
-        </Form.Item>
-        <Form.Item>
-          <Button type="primary" htmlType="submit" className="register-button">
-            Log in
-          </Button>
-          Or <a onClick={handleLogin}>register now!</a>
-        </Form.Item>
+    <div className="Auth">
+      <h1> {t("register")} </h1>
+      <Form<RegisterForm> onSubmit={handleSubmit} validation={validationSchemas()} translation="registerPage">
+        <Input name="email" type="email" />
+        <Input name="username" />
+        <Input name="password" type="password" />
+        <Input name="confirmPassword" type="password" />
+        <Button content="Register" type="submit" />
+        <Button content="Login" onClick={handleLogin} />
       </Form>
     </div>
   );
